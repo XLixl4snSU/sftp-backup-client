@@ -13,7 +13,7 @@ echo_key () {
 
 check_sftp_folder () {
   folder="$1"
-  if rsync -q -e "ssh -p $backup_port -i /home/ssh/id_rsa -o StrictHostKeyChecking=no -o BatchMode=yes" $backup_user@$backup_server:$folder
+  if rsync -e "ssh -p $backup_port -i /home/ssh/id_rsa -o StrictHostKeyChecking=no -o BatchMode=yes" $backup_user@$backup_server:$folder
   then
     ok "Connected via SFTP and found folder $folder"
     return 0
