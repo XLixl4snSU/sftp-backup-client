@@ -7,6 +7,7 @@ default_sftp_backup_folder="/backup/"
 default_sftp_logs_folder="/logs/"
 default_backup_retention_number=7
 default_backup_logsync_intervall=60
+default_backup_sync_logs_during_backup=false
 
 set_defaults() {
   for var in "$@"; do
@@ -17,7 +18,7 @@ set_defaults() {
   done
 }
 
-set_defaults backup_retention_number backup_logsync_intervall sftp_backup_folder sftp_logs_folder lock_delay
+set_defaults backup_retention_number backup_logsync_intervall backup_sync_logs_during_backup sftp_backup_folder sftp_logs_folder lock_delay
 
 time_now () {
   date "+%T"
