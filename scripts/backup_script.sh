@@ -31,10 +31,15 @@ background_sync() {
 end() {
     echo "---------------   End of backup log $date_today   ---------------------------------------"
     echo
-    pkill -KILL -P $sync_pid
-    kill $sync_pid
-    sync_logs
-    ok "Synced logs."
+    if [ -n "$sync_pid" ]; then
+        pkill -KILL -P "$sync_pid"
+        kill "$sync_pid"
+    fi
+    if sync_logs; then
+        ok "Synced logs."
+    else
+        warn "Could not sync logs."
+    fi
     /home/scripts/list_backups.sh > /dev/null 2>&1 &
     exit
 }
@@ -153,9 +158,13 @@ fi
 /home/scripts/list_backups.sh > /dev/null 2>&1 &
 
 # ------- Start of Backup --------
-# Start intervall sync of logs
-background_sync > /dev/null 2>&1 &
-sync_pid=$!
+# Start interval sync of logs only when explicitly enabled. rrsync allows only
+# one connection at a time, so the default is to sync logs after the backup.
+sync_pid=""
+if [ "$backup_sync_logs_during_backup" = true ]; then
+    background_sync > /dev/null 2>&1 &
+    sync_pid=$!
+fi
 
 echo "---------------   Start backup log $date_today (Using v$backup_version)   -------------------------"
 info "Starting Backup-Script..."

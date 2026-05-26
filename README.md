@@ -88,7 +88,8 @@ There is a simple **Webinterface** for most common actions required to manage th
 |lock_delay|number in seconds|Optional|Retry time when a lockfile is detected|300
 |backup_frequency|See Crontab |Optional|See https://crontab.guru|10 3 * * *
 |backup_retention_number|number| Optional|Keeps last X (daily) Backups|7
-|backup_logsync_intervall|number |Optional|Intervall to sync logs to origin server while the backup process is running in seconds.|60s
+|backup_sync_logs_during_backup|true/false|Optional|Sync logs to the origin server while the backup process is running. Keep this disabled when using rrsync with a single allowed connection.|false
+|backup_logsync_intervall|number |Optional|Interval to sync logs to origin server while the backup process is running in seconds. Only used when `backup_sync_logs_during_backup=true`.|60s
 |backup_rsync_custom_flags|string|Optional|Custom rsync flags, the following are always set: -rtvq --no-perms --delete --stats --progress|
 |sftp_backup_folder|string|Optional|Folder location of the remote backup folder|/backup/
 |sftp_logs_folder|string|Optional|Folder location of the remote logs folder|/logs/
